@@ -6,6 +6,7 @@ import vexriscv._
 import vexriscv.ip.{DataCacheConfig, InstructionCacheConfig}
 import spinal.core._
 import spinal.lib._
+import spinal.lib.bus.amba3.ahblite._
 import spinal.lib.bus.amba3.apb._
 import spinal.lib.bus.amba4.axi._
 import spinal.lib.com.jtag.Jtag
@@ -28,8 +29,6 @@ import scala.collection.Seq
 
 case class BrieyConfig(axiFrequency : HertzNumber,
                        onChipRamSize : BigInt,
-                       sdramLayout: SdramLayout,
-                       sdramTimings: SdramTimings,
                        cpuPlugins : ArrayBuffer[Plugin[VexRiscv]],
                        uartCtrlConfig : UartCtrlMemoryMappedConfig)
 
@@ -39,8 +38,6 @@ object BrieyConfig{
     val config = BrieyConfig(
       axiFrequency = 50 MHz,
       onChipRamSize  = 4 kB,
-      sdramLayout = IS42x320D.layout,
-      sdramTimings = IS42x320D.timingGrade7,
       uartCtrlConfig = UartCtrlMemoryMappedConfig(
         uartCtrlConfig = UartCtrlGenerics(
           dataWidthMax      = 8,
@@ -54,51 +51,17 @@ object BrieyConfig{
       ),
       cpuPlugins = ArrayBuffer(
         new PcManagerSimplePlugin(0x80000000l, false),
-        //          new IBusSimplePlugin(
-        //            interfaceKeepData = false,
-        //            catchAccessFault = true
-        //          ),
-        new IBusCachedPlugin(
+        new IBusSimplePlugin(
           resetVector = 0x80000000l,
+          cmdForkOnSecondStage = false,
+          cmdForkPersistence = true,
           prediction = STATIC,
-          config = InstructionCacheConfig(
-            cacheSize = 4096,
-            bytePerLine =32,
-            wayCount = 1,
-            addressWidth = 32,
-            cpuDataWidth = 32,
-            memDataWidth = 32,
-            catchIllegalAccess = true,
-            catchAccessFault = true,
-            asyncTagMemory = false,
-            twoCycleRam = true,
-            twoCycleCache = true
-          )
-          //            askMemoryTranslation = true,
-          //            memoryTranslatorPortConfig = MemoryTranslatorPortConfig(
-          //              portTlbSize = 4
-          //            )
+          catchAccessFault = false,
+          compressedGen = false
         ),
-        //                    new DBusSimplePlugin(
-        //                      catchAddressMisaligned = true,
-        //                      catchAccessFault = true
-        //                    ),
-        new DBusCachedPlugin(
-          config = new DataCacheConfig(
-            cacheSize         = 4096,
-            bytePerLine       = 32,
-            wayCount          = 1,
-            addressWidth      = 32,
-            cpuDataWidth      = 32,
-            memDataWidth      = 32,
-            catchAccessError  = true,
-            catchIllegal      = true,
-            catchUnaligned    = true
-          ),
-          memoryTranslatorPortConfig = null
-          //            memoryTranslatorPortConfig = MemoryTranslatorPortConfig(
-          //              portTlbSize = 6
-          //            )
+        new DBusSimplePlugin(
+          catchAddressMisaligned = false,
+          catchAccessFault = false
         ),
         new StaticMemoryTranslatorPlugin(
           ioRange      = _(31 downto 28) === 0xF
@@ -173,24 +136,16 @@ class Briey(val config: BrieyConfig) extends Component{
   import config._
   val debug = true
   val interruptCount = 4
-  def vgaRgbConfig = RgbConfig(5,6,5)
 
   val io = new Bundle{
     //Clocks / reset
     val asyncReset = in Bool()
     val axiClk     = in Bool()
-    val vgaClk     = in Bool()
 
     //Main components IO
     val jtag       = slave(Jtag())
-    val sdram      = master(SdramInterface(sdramLayout))
-
-    //Peripherals IO
-    val gpioA         = master(TriStateArray(32 bits))
-    val gpioB         = master(TriStateArray(32 bits))
-    val uart          = master(Uart())
-    val vga           = master(Vga(vgaRgbConfig))
-    val timerExternal = in(PinsecTimerCtrlExternal())
+    // Peripherals IO
+    val timerExternal = in Bool()
     val coreInterrupt = in Bool()
   }
 
@@ -219,7 +174,6 @@ class Briey(val config: BrieyConfig) extends Component{
     //Create all reset used later in the design
     val systemReset  = RegNext(systemResetUnbuffered)
     val axiReset     = RegNext(systemResetUnbuffered)
-    val vgaReset     = BufferCC(axiReset)
   }
 
   val axiClockDomain = ClockDomain(
@@ -234,60 +188,22 @@ class Briey(val config: BrieyConfig) extends Component{
     frequency = FixedFrequency(axiFrequency)
   )
 
-  val vgaClockDomain = ClockDomain(
-    clock = io.vgaClk,
-    reset = resetCtrl.vgaReset
-  )
-
   val axi = new ClockingArea(axiClockDomain) {
-    val ram = Axi4SharedOnChipRam(
-      dataWidth = 32,
-      byteCount = onChipRamSize,
-      idWidth = 4
+    val ahblite_config = AhbLite3Config(
+      addressWidth = 32,
+      dataWidth = 32
     )
 
-    val sdramCtrl = Axi4SharedSdramCtrl(
-      axiDataWidth = 32,
-      axiIdWidth   = 4,
-      layout       = sdramLayout,
-      timing       = sdramTimings,
-      CAS          = 3
+    val apb3_config = Apb3Config(
+      addressWidth = 32,
+      dataWidth = 32
+      // selWidth = 1
     )
 
-
-    val apbBridge = Axi4SharedToApb3Bridge(
-      addressWidth = 20,
-      dataWidth    = 32,
-      idWidth      = 4
+    val ram = AhbLite3OnChipRam(
+      AhbLite3Config = ahblite_config,
+      byteCount = onChipRamSize
     )
-
-    val gpioACtrl = Apb3Gpio(
-      gpioWidth = 32,
-      withReadSync = true
-    )
-    val gpioBCtrl = Apb3Gpio(
-      gpioWidth = 32,
-      withReadSync = true
-    )
-    val timerCtrl = PinsecTimerCtrl()
-
-
-    val uartCtrl = Apb3UartCtrl(uartCtrlConfig)
-    uartCtrl.io.apb.addAttribute(Verilator.public)
-
-
-    val vgaCtrlConfig = Axi4VgaCtrlGenerics(
-      axiAddressWidth = 32,
-      axiDataWidth    = 32,
-      burstLength     = 8,
-      frameSizeMax    = 2048*1512*2,
-      fifoSize        = 512,
-      rgbConfig       = vgaRgbConfig,
-      vgaClock        = vgaClockDomain
-    )
-    val vgaCtrl = Axi4VgaCtrl(vgaCtrlConfig)
-
-
 
     val core = new Area{
       val config = VexRiscvConfig(
@@ -295,16 +211,14 @@ class Briey(val config: BrieyConfig) extends Component{
       )
 
       val cpu = new VexRiscv(config)
-      var iBus : Axi4ReadOnly = null
-      var dBus : Axi4Shared = null
+      var iBus : AhbLite3Master = null
+      var dBus : AhbLite3Master = null
       for(plugin <- config.plugins) plugin match{
-        case plugin : IBusSimplePlugin => iBus = plugin.iBus.toAxi4ReadOnly()
-        case plugin : IBusCachedPlugin => iBus = plugin.iBus.toAxi4ReadOnly()
-        case plugin : DBusSimplePlugin => dBus = plugin.dBus.toAxi4Shared()
-        case plugin : DBusCachedPlugin => dBus = plugin.dBus.toAxi4Shared(true)
+        case plugin: IBusSimplePlugin => iBus = plugin.iBus.toAhbLite3Master()
+        case plugin: DBusSimplePlugin => dBus = plugin.dBus.toAhbLite3Master(avoidWriteToReadHazard = true)
         case plugin : CsrPlugin        => {
           plugin.externalInterrupt := BufferCC(io.coreInterrupt)
-          plugin.timerInterrupt := timerCtrl.io.interrupt
+          plugin.timerInterrupt := BufferCC(io.timerExternal)
         }
         case plugin : DebugPlugin      => debugClockDomain{
           resetCtrl.axiReset setWhen(RegNext(plugin.io.resetOut))
@@ -314,76 +228,17 @@ class Briey(val config: BrieyConfig) extends Component{
       }
     }
 
-
-    val axiCrossbar = Axi4CrossbarFactory()
-
-    axiCrossbar.addSlaves(
-      ram.io.axi       -> (0x80000000L,   onChipRamSize),
-      sdramCtrl.io.axi -> (0x40000000L,   sdramLayout.capacity),
-      apbBridge.io.axi -> (0xF0000000L,   1 MB)
+    val crossbar = AhbLite3CrossbarFactory(ahblite_config)
+    crossbar.addSlaves(
+      ram.io.ahb      -> (0x80000000L,   onChipRamSize)
     )
-
-    axiCrossbar.addConnections(
-      core.iBus       -> List(ram.io.axi, sdramCtrl.io.axi),
-      core.dBus       -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
-      vgaCtrl.io.axi  -> List(            sdramCtrl.io.axi)
+    crossbar.addConnections(
+      core.iBus.toAhbLite3() -> List(ram.io.ahb),
+      core.dBus.toAhbLite3() -> List(ram.io.ahb)
     )
+    crossbar.build()
 
-
-    axiCrossbar.addPipelining(apbBridge.io.axi)((crossbar,bridge) => {
-      crossbar.sharedCmd.halfPipe() >> bridge.sharedCmd
-      crossbar.writeData.halfPipe() >> bridge.writeData
-      crossbar.writeRsp             << bridge.writeRsp
-      crossbar.readRsp              << bridge.readRsp
-    })
-
-    axiCrossbar.addPipelining(sdramCtrl.io.axi)((crossbar,ctrl) => {
-      crossbar.sharedCmd.halfPipe()  >>  ctrl.sharedCmd
-      crossbar.writeData            >/-> ctrl.writeData
-      crossbar.writeRsp              <<  ctrl.writeRsp
-      crossbar.readRsp               <<  ctrl.readRsp
-    })
-
-    axiCrossbar.addPipelining(ram.io.axi)((crossbar,ctrl) => {
-      crossbar.sharedCmd.halfPipe()  >>  ctrl.sharedCmd
-      crossbar.writeData            >/-> ctrl.writeData
-      crossbar.writeRsp              <<  ctrl.writeRsp
-      crossbar.readRsp               <<  ctrl.readRsp
-    })
-
-    axiCrossbar.addPipelining(vgaCtrl.io.axi)((ctrl,crossbar) => {
-      ctrl.readCmd.halfPipe()    >>  crossbar.readCmd
-      ctrl.readRsp               <<  crossbar.readRsp
-    })
-
-    axiCrossbar.addPipelining(core.dBus)((cpu,crossbar) => {
-      cpu.sharedCmd             >>  crossbar.sharedCmd
-      cpu.writeData             >>  crossbar.writeData
-      cpu.writeRsp              <<  crossbar.writeRsp
-      cpu.readRsp               <-< crossbar.readRsp //Data cache directly use read responses without buffering, so pipeline it for FMax
-    })
-
-    axiCrossbar.build()
-
-
-    val apbDecoder = Apb3Decoder(
-      master = apbBridge.io.apb,
-      slaves = List(
-        gpioACtrl.io.apb -> (0x00000, 4 kB),
-        gpioBCtrl.io.apb -> (0x01000, 4 kB),
-        uartCtrl.io.apb  -> (0x10000, 4 kB),
-        timerCtrl.io.apb -> (0x20000, 4 kB),
-        vgaCtrl.io.apb   -> (0x30000, 4 kB)
-      )
-    )
   }
-
-  io.gpioA          <> axi.gpioACtrl.io.gpio
-  io.gpioB          <> axi.gpioBCtrl.io.gpio
-  io.timerExternal  <> axi.timerCtrl.io.external
-  io.uart           <> axi.uartCtrl.io.uart
-  io.sdram          <> axi.sdramCtrl.io.sdram
-  io.vga            <> axi.vgaCtrl.io.vga
 }
 
 //DE1-SoC
@@ -392,99 +247,7 @@ object Briey{
     val config = SpinalConfig()
     config.generateVerilog({
       val toplevel = new Briey(BrieyConfig.default)
-      toplevel.axi.vgaCtrl.vga.ctrl.io.error.addAttribute(Verilator.public)
-      toplevel.axi.vgaCtrl.vga.ctrl.io.frameStart.addAttribute(Verilator.public)
       toplevel
     })
-  }
-}
-
-//DE1-SoC with memory init
-object BrieyWithMemoryInit{
-  def main(args: Array[String]) {
-    val config = SpinalConfig()
-    config.generateVerilog({
-      val toplevel = new Briey(BrieyConfig.default)
-      toplevel.axi.vgaCtrl.vga.ctrl.io.error.addAttribute(Verilator.public)
-      toplevel.axi.vgaCtrl.vga.ctrl.io.frameStart.addAttribute(Verilator.public)
-      HexTools.initRam(toplevel.axi.ram.ram, "src/main/ressource/hex/muraxDemo.hex", 0x80000000l)
-      toplevel
-    })
-  }
-}
-
-
-//DE0-Nano
-object BrieyDe0Nano{
-  def main(args: Array[String]) {
-    object IS42x160G {
-      def layout = SdramLayout(
-        generation = SDR,
-        bankWidth   = 2,
-        columnWidth = 9,
-        rowWidth    = 13,
-        dataWidth   = 16
-      )
-
-      def timingGrade7 = SdramTimings(
-        bootRefreshCount =   8,
-        tPOW             = 100 us,
-        tREF             =  64 ms,
-        tRC              =  60 ns,
-        tRFC             =  60 ns,
-        tRAS             =  37 ns,
-        tRP              =  15 ns,
-        tRCD             =  15 ns,
-        cMRD             =   2,
-        tWR              =  10 ns,
-        cWR              =   1
-      )
-    }
-    val config = SpinalConfig()
-    config.generateVerilog({
-      val toplevel = new Briey(BrieyConfig.default.copy(sdramLayout = IS42x160G.layout))
-      toplevel
-    })
-  }
-}
-
-
-
-import spinal.core.sim._
-object BrieySim {
-  def main(args: Array[String]): Unit = {
-    val simSlowDown = false
-    SimConfig.allOptimisation.compile(new Briey(BrieyConfig.default)).doSimUntilVoid{dut =>
-      val mainClkPeriod = (1e12/dut.config.axiFrequency.toDouble).toLong
-      val jtagClkPeriod = mainClkPeriod*4
-      val uartBaudRate = 115200
-      val uartBaudPeriod = (1e12/uartBaudRate).toLong
-
-      val clockDomain = ClockDomain(dut.io.axiClk, dut.io.asyncReset)
-      clockDomain.forkStimulus(mainClkPeriod)
-
-      val tcpJtag = JtagTcp(
-        jtag = dut.io.jtag,
-        jtagClkPeriod = jtagClkPeriod
-      )
-
-      val uartTx = UartDecoder(
-        uartPin = dut.io.uart.txd,
-        baudPeriod = uartBaudPeriod
-      )
-
-      val uartRx = UartEncoder(
-        uartPin = dut.io.uart.rxd,
-        baudPeriod = uartBaudPeriod
-      )
-
-      val sdram = SdramModel(
-        dut.io.sdram,
-        dut.config.sdramLayout,
-        clockDomain
-      )
-
-      dut.io.coreInterrupt #= false
-    }
   }
 }
