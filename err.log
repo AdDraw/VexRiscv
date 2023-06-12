@@ -1,0 +1,835 @@
+Executing task: /"usr"/"lib"/"jvm"/"java-11-openjdk-amd64"/"bin"/"java" "-Duser.dir=/home/adam/plumerai/VexAdam" -classpath "/home/adam/plumerai/VexAdam/.metals/.tmp/classpath_37F1EBB55B28A6BEF4A00D9FA41FD0D3.jar" vexriscv.demo.Briey
+
+[Runtime] SpinalHDL v1.8.1    git head : 2a7592004363e5b40ec43e1f122ed8641cd8965b
+[Runtime] JVM max memory : 16024.0MiB
+[Runtime] Current date : 2023.06.12 11:43:24
+[Progress] at 0.000 : Elaborate components
+[Warning] This VexRiscv configuration is set without software ebreak instruction support. Some software may rely on it (ex: Rust). (This isn't related to JTAG ebreak)
+PcManagerSimplePlugin is now useless
+[Progress] at 0.487 : Checks and transforms
+
+**********************************************************************************************
+[Warning] Elaboration failed (7 errors).
+          Spinal will restart with scala trace to help you to find the problem.
+**********************************************************************************************
+
+[Progress] at 0.672 : Elaborate components
+[Warning] This VexRiscv configuration is set without software ebreak instruction support. Some software may rely on it (ex: Rust). (This isn't related to JTAG ebreak)
+PcManagerSimplePlugin is now useless
+[Progress] at 0.810 : Checks and transforms
+Exception in thread "main" spinal.core.SpinalExit:
+
+
+ Error detected in phase PhaseCheckCombinationalLoops
+********************************************************************************
+********************************************************************************
+
+COMBINATORIAL LOOP :
+  Partial chain :
+    >>> (toplevel/io_ahb_arbiter/logic_maskRouted :  Bits[2 bits]) at jdk.internal.reflect.GeneratedConstructorAccessor6.newInstance(Unknown Source) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  Bool) at spinal.lib.OHToUInt$.apply(Utils.scala:51) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder$$anonfun$8.apply(AhbLite3Decoder.scala:153) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:68) >>>
+    >>> (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool) at vexriscv.plugin.DBusSimpleRsp.<init>(DBusSimplePlugin.scala:25) >>>
+    >>> (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool) at vexriscv.plugin.DBusSimplePlugin$$anon$6.<init>(DBusSimplePlugin.scala:482) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:49) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:56) >>>
+    >>> (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:60) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/[AhbLite3Decoder]/isIdle :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.isIdle(AhbLite3.scala:136) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:156) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:158) >>>
+    >>> (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:163) >>>
+    >>> (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:159) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HSEL : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/logic_requests :  Bits[2 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[2 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:254) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[4 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:257) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[4 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:258) >>>
+    >>> (toplevel/io_ahb_arbiter/logic_maskProposal :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Arbiter$$anon$3.<init>(AhbLite3Arbiter.scala:53) >>>
+
+  Full chain :
+    (toplevel/io_ahb_arbiter/logic_maskRouted :  Bits[2 bits])
+    Bits(Int)
+    (toplevel/io_ahb_arbiter/??? :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool)
+    (toplevel/??? :  Bool)
+    (toplevel/??? :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool)
+    ! Bool
+    Bool || Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool)
+    spinal.core.internals.WhenStatement@2eb917d0
+    (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool)
+    Bool || Bool
+    (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool)
+    Bool || Bool
+    Bool || Bool
+    Bool || Bool
+    (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool)
+    (toplevel/??? :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/??? :  Bits[2 bits])
+    (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits])
+    Bits === Bits
+    (toplevel/[AhbLite3Decoder]/isIdle :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bits -> Bits
+    (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits])
+    Bits === Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits])
+    Bits =/= Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool)
+    ! Bool
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits])
+    Bits(Int)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool)
+    (toplevel/io_ahb_arbiter/io_inputs_1_HSEL : in Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/io_ahb_arbiter/logic_requests :  Bits[2 bits])
+    (Bits -> UInt of 2 bits)
+    (toplevel/io_ahb_arbiter/??? :  UInt[2 bits])
+    (UInt -> Bits of 2 bits)
+    Bits ## Bits
+    (Bits -> UInt of 4 bits)
+    (toplevel/io_ahb_arbiter/??? :  UInt[4 bits])
+    (UInt & UInt)[4 bits]
+    (toplevel/io_ahb_arbiter/??? :  UInt[4 bits])
+    UInt(Int downto Int)
+    (UInt | UInt)[2 bits]
+    (UInt -> Bits of 2 bits)
+    (toplevel/io_ahb_arbiter/logic_maskProposal :  Bits[2 bits])
+    (Bool ? Bits | Bits)[2 bits]
+********************************************************************************
+********************************************************************************
+
+COMBINATORIAL LOOP :
+  Partial chain :
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HSEL : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder$$anonfun$8.apply(AhbLite3Decoder.scala:153) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:68) >>>
+    >>> (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool) at vexriscv.plugin.DBusSimpleRsp.<init>(DBusSimplePlugin.scala:25) >>>
+    >>> (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool) at vexriscv.plugin.DBusSimplePlugin$$anon$6.<init>(DBusSimplePlugin.scala:482) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:49) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:56) >>>
+    >>> (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:60) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/[AhbLite3Decoder]/isIdle :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.isIdle(AhbLite3.scala:136) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:156) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:158) >>>
+    >>> (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:163) >>>
+    >>> (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:159) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+
+  Full chain :
+    (toplevel/io_ahb_arbiter/io_inputs_1_HSEL : in Bool)
+    ! Bool
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool)
+    (toplevel/??? :  Bool)
+    (toplevel/??? :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool)
+    ! Bool
+    Bool || Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool)
+    spinal.core.internals.WhenStatement@2eb917d0
+    (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool)
+    Bool || Bool
+    (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool)
+    Bool || Bool
+    Bool || Bool
+    Bool || Bool
+    (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool)
+    (toplevel/??? :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/??? :  Bits[2 bits])
+    (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits])
+    Bits === Bits
+    (toplevel/[AhbLite3Decoder]/isIdle :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bits -> Bits
+    (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits])
+    Bits === Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits])
+    Bits =/= Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool)
+    ! Bool
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits])
+    Bits(Int)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool)
+********************************************************************************
+********************************************************************************
+
+COMBINATORIAL LOOP :
+  Partial chain :
+    >>> (toplevel/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/[AhbLite3Decoder]/isIdle :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.isIdle(AhbLite3.scala:136) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:156) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:158) >>>
+    >>> (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:163) >>>
+    >>> (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:159) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_0_HSEL : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/io_output_HSEL : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/axi_ram/io_ahb_HSEL : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/axi_ram/io_ahb_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/io_ahb_arbiter/io_output_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder$$anonfun$8.apply(AhbLite3Decoder.scala:153) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:68) >>>
+    >>> (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool) at vexriscv.plugin.DBusSimpleRsp.<init>(DBusSimplePlugin.scala:25) >>>
+    >>> (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool) at vexriscv.plugin.DBusSimplePlugin$$anon$6.<init>(DBusSimplePlugin.scala:482) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:49) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:56) >>>
+    >>> (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:60) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/[AhbLite3Decoder]/isIdle :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.isIdle(AhbLite3.scala:136) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:156) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:158) >>>
+    >>> (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:163) >>>
+    >>> (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:159) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HSEL : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/logic_requests :  Bits[2 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[2 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:254) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[4 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:257) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[4 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:258) >>>
+    >>> (toplevel/io_ahb_arbiter/logic_maskProposal :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Arbiter$$anon$3.<init>(AhbLite3Arbiter.scala:53) >>>
+    >>> (toplevel/io_ahb_arbiter/logic_maskRouted :  Bits[2 bits]) at jdk.internal.reflect.GeneratedConstructorAccessor6.newInstance(Unknown Source) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  Bool) at spinal.lib.OHToUInt$.apply(Utils.scala:51) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_0_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder$$anonfun$8.apply(AhbLite3Decoder.scala:153) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:68) >>>
+    >>> (toplevel/axi_core_cpu/iBus_rsp_valid : in Bool) at spinal.lib.Flow.<init>(Flow.scala:21) >>>
+    >>> (toplevel/axi_core_cpu/iBus_rsp_toStream_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_rspBuffer_c/io_push_valid : in Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_rspBuffer_c/io_pop_valid : out Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_rspBuffer_output_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_join_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_join_fire :  Bool) at spinal.lib.Stream.fire(Stream.scala:287) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_iBusRsp_stages_1_output_ready :  Bool) at spinal.lib.Stream.<init>(Stream.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_iBusRsp_stages_1_input_ready :  Bool) at spinal.lib.Stream.<init>(Stream.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_iBusRsp_stages_0_output_ready :  Bool) at spinal.lib.Stream.<init>(Stream.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_cmdFork_canEmit :  Bool) at vexriscv.plugin.IBusSimplePlugin$$anon$1$$anon$3.<init>(IBusSimplePlugin.scala:304) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_cmd_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/axi_core_cpu/IBusSimplePlugin_cmd_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/axi_core_cpu/iBus_cmd_valid : out Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_iBus_cmd_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+
+  Full chain :
+    (toplevel/??? :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits])
+    Bits === Bits
+    (toplevel/[AhbLite3Decoder]/isIdle :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bits -> Bits
+    (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits])
+    Bits === Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits])
+    Bits =/= Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool)
+    ! Bool
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits])
+    Bits(Int)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool)
+    (toplevel/io_ahb_arbiter/io_inputs_0_HSEL : in Bool)
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_output_HSEL : out Bool)
+    (toplevel/axi_ram/io_ahb_HSEL : in Bool)
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    ! Bool
+    (toplevel/axi_ram/io_ahb_HREADYOUT : out Bool)
+    (toplevel/io_ahb_arbiter/io_output_HREADYOUT : in Bool)
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool)
+    (toplevel/??? :  Bool)
+    (toplevel/??? :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool)
+    ! Bool
+    Bool || Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool)
+    spinal.core.internals.WhenStatement@2eb917d0
+    (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool)
+    Bool || Bool
+    (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool)
+    Bool || Bool
+    Bool || Bool
+    Bool || Bool
+    (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool)
+    (toplevel/??? :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/??? :  Bits[2 bits])
+    (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits])
+    Bits === Bits
+    (toplevel/[AhbLite3Decoder]/isIdle :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bits -> Bits
+    (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits])
+    Bits === Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits])
+    Bits =/= Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool)
+    ! Bool
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits])
+    Bits(Int)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool)
+    (toplevel/io_ahb_arbiter/io_inputs_1_HSEL : in Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/io_ahb_arbiter/logic_requests :  Bits[2 bits])
+    (Bits -> UInt of 2 bits)
+    (toplevel/io_ahb_arbiter/??? :  UInt[2 bits])
+    (UInt -> Bits of 2 bits)
+    Bits ## Bits
+    (Bits -> UInt of 4 bits)
+    (toplevel/io_ahb_arbiter/??? :  UInt[4 bits])
+    (UInt & UInt)[4 bits]
+    (toplevel/io_ahb_arbiter/??? :  UInt[4 bits])
+    UInt(Int downto Int)
+    (UInt | UInt)[2 bits]
+    (UInt -> Bits of 2 bits)
+    (toplevel/io_ahb_arbiter/logic_maskProposal :  Bits[2 bits])
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/io_ahb_arbiter/logic_maskRouted :  Bits[2 bits])
+    Bits(Int)
+    (toplevel/io_ahb_arbiter/??? :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_inputs_0_HREADYOUT : out Bool)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool)
+    (toplevel/??? :  Bool)
+    (toplevel/??? :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/iBus_rsp_valid : in Bool)
+    (toplevel/axi_core_cpu/iBus_rsp_toStream_valid :  Bool)
+    (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_rspBuffer_c/io_push_valid : in Bool)
+    (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_rspBuffer_c/io_pop_valid : out Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_rspBuffer_output_valid :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_join_valid :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/IBusSimplePlugin_rspJoin_join_fire :  Bool)
+    Bool ? Bool | Bool
+    (toplevel/axi_core_cpu/IBusSimplePlugin_iBusRsp_stages_1_output_ready :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/IBusSimplePlugin_iBusRsp_stages_1_input_ready :  Bool)
+    Bool || Bool
+    (toplevel/axi_core_cpu/??? :  Bool)
+    (toplevel/axi_core_cpu/IBusSimplePlugin_iBusRsp_stages_0_output_ready :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/IBusSimplePlugin_cmdFork_canEmit :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/IBusSimplePlugin_cmd_valid :  Bool)
+    Bool || Bool
+    (toplevel/axi_core_cpu/IBusSimplePlugin_cmd_s2mPipe_valid :  Bool)
+    (toplevel/axi_core_cpu/iBus_cmd_valid : out Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_iBus_cmd_s2mPipe_valid :  Bool)
+    (toplevel/??? :  Bool)
+********************************************************************************
+********************************************************************************
+
+COMBINATORIAL LOOP :
+  Partial chain :
+    >>> (toplevel/io_ahb_arbiter/??? :  Bool) at spinal.lib.OHToUInt$.apply(Utils.scala:51) >>>
+    >>> (toplevel/io_ahb_arbiter/io_output_HSEL : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/axi_ram/io_ahb_HSEL : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/axi_ram/io_ahb_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/io_ahb_arbiter/io_output_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder$$anonfun$8.apply(AhbLite3Decoder.scala:153) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:68) >>>
+    >>> (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool) at vexriscv.plugin.DBusSimpleRsp.<init>(DBusSimplePlugin.scala:25) >>>
+    >>> (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool) at vexriscv.plugin.DBusSimplePlugin$$anon$6.<init>(DBusSimplePlugin.scala:482) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:49) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:56) >>>
+    >>> (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:60) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/[AhbLite3Decoder]/isIdle :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.isIdle(AhbLite3.scala:136) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:156) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:158) >>>
+    >>> (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:163) >>>
+    >>> (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:159) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HSEL : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:109) >>>
+    >>> (toplevel/io_ahb_arbiter/logic_requests :  Bits[2 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[2 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:254) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[4 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:257) >>>
+    >>> (toplevel/io_ahb_arbiter/??? :  UInt[4 bits]) at spinal.lib.OHMasking$.roundRobin(Utils.scala:258) >>>
+    >>> (toplevel/io_ahb_arbiter/logic_maskProposal :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Arbiter$$anon$3.<init>(AhbLite3Arbiter.scala:53) >>>
+    >>> (toplevel/io_ahb_arbiter/logic_maskRouted :  Bits[2 bits]) at jdk.internal.reflect.GeneratedConstructorAccessor6.newInstance(Unknown Source) >>>
+
+  Full chain :
+    (toplevel/io_ahb_arbiter/??? :  Bool)
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_output_HSEL : out Bool)
+    (toplevel/axi_ram/io_ahb_HSEL : in Bool)
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    ! Bool
+    (toplevel/axi_ram/io_ahb_HREADYOUT : out Bool)
+    (toplevel/io_ahb_arbiter/io_output_HREADYOUT : in Bool)
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool)
+    (toplevel/??? :  Bool)
+    (toplevel/??? :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool)
+    ! Bool
+    Bool || Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool)
+    spinal.core.internals.WhenStatement@2eb917d0
+    (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool)
+    Bool || Bool
+    (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool)
+    Bool || Bool
+    Bool || Bool
+    Bool || Bool
+    (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool)
+    (toplevel/??? :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/??? :  Bits[2 bits])
+    (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits])
+    Bits === Bits
+    (toplevel/[AhbLite3Decoder]/isIdle :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bits -> Bits
+    (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits])
+    Bits === Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits])
+    Bits =/= Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool)
+    ! Bool
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/[AhbLite3Decoder]/applyedSels :  Bits[2 bits])
+    Bits(Int)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HSEL : out Bool)
+    (toplevel/io_ahb_arbiter/io_inputs_1_HSEL : in Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/io_ahb_arbiter/logic_requests :  Bits[2 bits])
+    (Bits -> UInt of 2 bits)
+    (toplevel/io_ahb_arbiter/??? :  UInt[2 bits])
+    (UInt -> Bits of 2 bits)
+    Bits ## Bits
+    (Bits -> UInt of 4 bits)
+    (toplevel/io_ahb_arbiter/??? :  UInt[4 bits])
+    (UInt & UInt)[4 bits]
+    (toplevel/io_ahb_arbiter/??? :  UInt[4 bits])
+    UInt(Int downto Int)
+    (UInt | UInt)[2 bits]
+    (UInt -> Bits of 2 bits)
+    (toplevel/io_ahb_arbiter/logic_maskProposal :  Bits[2 bits])
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/io_ahb_arbiter/logic_maskRouted :  Bits[2 bits])
+    Bits(Int)
+********************************************************************************
+********************************************************************************
+
+COMBINATORIAL LOOP :
+  Partial chain :
+    >>> (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:163) >>>
+    >>> (toplevel/[AhbLite3Decoder]/applyedHTRANS :  Bits[2 bits]) at jdk.internal.reflect.GeneratedConstructorAccessor6.newInstance(Unknown Source) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HTRANS : out Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/io_ahb_arbiter/io_output_HTRANS : out Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/axi_ram/io_ahb_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/axi_ram/io_ahb_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/io_ahb_arbiter/io_output_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder$$anonfun$8.apply(AhbLite3Decoder.scala:153) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:68) >>>
+    >>> (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool) at vexriscv.plugin.DBusSimpleRsp.<init>(DBusSimplePlugin.scala:25) >>>
+    >>> (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool) at vexriscv.plugin.DBusSimplePlugin$$anon$6.<init>(DBusSimplePlugin.scala:482) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:49) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:56) >>>
+    >>> (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:60) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/[AhbLite3Decoder]/isIdle :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.isIdle(AhbLite3.scala:136) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits]) at spinal.lib.TraversableOncePimped.asBits(Utils.scala:1080) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:156) >>>
+    >>> (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder.<init>(AhbLite3Decoder.scala:158) >>>
+
+  Full chain :
+    (toplevel/[AhbLite3Decoder]/noneIdleSwitchDetected :  Bool)
+    ! Bool
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/[AhbLite3Decoder]/applyedHTRANS :  Bits[2 bits])
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HTRANS : out Bits[2 bits])
+    (toplevel/io_ahb_arbiter/io_inputs_1_HTRANS : in Bits[2 bits])
+    mux of Bits[2 bits]
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/io_ahb_arbiter/io_output_HTRANS : out Bits[2 bits])
+    (toplevel/axi_ram/io_ahb_HTRANS : in Bits[2 bits])
+    Bits(Int)
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    ! Bool
+    (toplevel/axi_ram/io_ahb_HREADYOUT : out Bool)
+    (toplevel/io_ahb_arbiter/io_output_HREADYOUT : in Bool)
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool)
+    (toplevel/??? :  Bool)
+    (toplevel/??? :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool)
+    ! Bool
+    Bool || Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool)
+    spinal.core.internals.WhenStatement@2eb917d0
+    (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool)
+    Bool || Bool
+    (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool)
+    Bool || Bool
+    Bool || Bool
+    Bool || Bool
+    (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool)
+    (toplevel/??? :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/??? :  Bits[2 bits])
+    (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits])
+    Bits === Bits
+    (toplevel/[AhbLite3Decoder]/isIdle :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bits -> Bits
+    (toplevel/[AhbLite3Decoder]/decodesSlaves :  Bits[1 bits])
+    Bits === Bits
+    Bool && Bool
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/decodeDefaultSlave :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/[AhbLite3Decoder]/decodedSels :  Bits[2 bits])
+    Bits =/= Bits
+    Bool && Bool
+    Bool && Bool
+********************************************************************************
+********************************************************************************
+
+COMBINATORIAL LOOP :
+  Partial chain :
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/[AhbLite3Decoder]/applyedHTRANS :  Bits[2 bits]) at jdk.internal.reflect.GeneratedConstructorAccessor6.newInstance(Unknown Source) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HTRANS : out Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/io_ahb_arbiter/io_output_HTRANS : out Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/axi_ram/io_ahb_HTRANS : in Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:115) >>>
+    >>> (toplevel/axi_ram/io_ahb_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/io_ahb_arbiter/io_output_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Decoder$$anonfun$8.apply(AhbLite3Decoder.scala:153) >>>
+    >>> (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3.<init>(AhbLite3.scala:123) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:68) >>>
+    >>> (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool) at vexriscv.plugin.DBusSimpleRsp.<init>(DBusSimplePlugin.scala:25) >>>
+    >>> (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool) at vexriscv.plugin.DBusSimplePlugin$$anon$6.<init>(DBusSimplePlugin.scala:482) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:49) >>>
+    >>> (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:55) >>>
+    >>> (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool) at vexriscv.Stage$$anon$1.<init>(Stage.scala:56) >>>
+    >>> (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bool) at spinal.lib.Stream.<init>(Stream.scala:54) >>>
+    >>> (toplevel/??? :  Bits[2 bits]) at spinal.lib.bus.amba3.ahblite.AhbLite3Master.<init>(AhbLite3.scala:60) >>>
+
+  Full chain :
+    (toplevel/[AhbLite3Decoder]/io_input_HTRANS : in Bits[2 bits])
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/[AhbLite3Decoder]/applyedHTRANS :  Bits[2 bits])
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HTRANS : out Bits[2 bits])
+    (toplevel/io_ahb_arbiter/io_inputs_1_HTRANS : in Bits[2 bits])
+    mux of Bits[2 bits]
+    (Bool ? Bits | Bits)[2 bits]
+    (toplevel/io_ahb_arbiter/io_output_HTRANS : out Bits[2 bits])
+    (toplevel/axi_ram/io_ahb_HTRANS : in Bits[2 bits])
+    Bits(Int)
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    ! Bool
+    (toplevel/axi_ram/io_ahb_HREADYOUT : out Bool)
+    (toplevel/io_ahb_arbiter/io_output_HREADYOUT : in Bool)
+    Bool && Bool
+    Bool || Bool
+    (toplevel/io_ahb_arbiter/io_inputs_1_HREADYOUT : out Bool)
+    (toplevel/[AhbLite3Decoder]/io_outputs_0_HREADYOUT : in Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/slaveReadyOutReduction :  Bool)
+    Bool && Bool
+    (toplevel/[AhbLite3Decoder]/io_input_HREADYOUT : out Bool)
+    (toplevel/??? :  Bool)
+    (toplevel/??? :  Bool)
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_rsp_ready : in Bool)
+    ! Bool
+    Bool || Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/when_DBusSimplePlugin_l482 :  Bool)
+    spinal.core.internals.WhenStatement@2eb917d0
+    (toplevel/axi_core_cpu/memory_arbitration_haltItself :  Bool)
+    Bool || Bool
+    (toplevel/axi_core_cpu/memory_arbitration_isStuck :  Bool)
+    Bool || Bool
+    Bool || Bool
+    Bool || Bool
+    (toplevel/axi_core_cpu/execute_arbitration_isStuckByOthers :  Bool)
+    ! Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    Bool && Bool
+    (toplevel/axi_core_cpu/dBus_cmd_valid : out Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_valid :  Bool)
+    Bool || Bool
+    (toplevel/toplevel_axi_core_cpu_dBus_cmd_s2mPipe_s2mPipe_valid :  Bool)
+    (toplevel/??? :  Bool)
+    Bits -> Bits
+    Bits ## Bits
+    (toplevel/??? :  Bits[2 bits])
+********************************************************************************
+********************************************************************************
+
+Design's errors are listed above.
+SpinalHDL compiler exit stack :
+
+        at spinal.core.SpinalExit$.apply(Misc.scala:440)
+        at spinal.core.SpinalError$.apply(Misc.scala:495)
+        at spinal.core.internals.PhaseContext.checkPendingErrors(Phase.scala:175)
+        at spinal.core.internals.PhaseContext.doPhase(Phase.scala:191)
+        at spinal.core.internals.SpinalVerilogBoot$$anonfun$singleShot$2$$anonfun$apply$139.apply(Phase.scala:2894)
+        at spinal.core.internals.SpinalVerilogBoot$$anonfun$singleShot$2$$anonfun$apply$139.apply(Phase.scala:2892)
+        at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)
+        at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:48)
+        at spinal.core.internals.SpinalVerilogBoot$$anonfun$singleShot$2.apply(Phase.scala:2892)
+        at spinal.core.internals.SpinalVerilogBoot$$anonfun$singleShot$2.apply(Phase.scala:2828)
+        at spinal.core.ScopeProperty$.sandbox(ScopeProperty.scala:69)
+        at spinal.core.internals.SpinalVerilogBoot$.singleShot(Phase.scala:2828)
+        at spinal.core.internals.SpinalVerilogBoot$.apply(Phase.scala:2823)
+        at spinal.core.Spinal$.apply(Spinal.scala:412)
+        at spinal.core.SpinalConfig.generateVerilog(Spinal.scala:178)
+        at vexriscv.demo.Briey$.main(Briey.scala:292)
+        at vexriscv.demo.Briey.main(Briey.scala)
+
+ *  The terminal process "/usr/bin/bash '-c', '/"usr"/"lib"/"jvm"/"java-11-openjdk-amd64"/"bin"/"java" "-Duser.dir=/home/adam/plumerai/VexAdam" -classpath "/home/adam/plumerai/VexAdam/.metals/.tmp/classpath_37F1EBB55B28A6BEF4A00D9FA41FD0D3.jar" vexriscv.demo.Briey '" terminated with exit code: 1.
+ *  Terminal will be reused by tasks, press any key to close it.
