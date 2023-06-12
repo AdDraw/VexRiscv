@@ -61,7 +61,8 @@ object BrieyConfig{
         ),
         new DBusSimplePlugin(
           catchAddressMisaligned = false,
-          catchAccessFault = false
+          catchAccessFault = false,
+          emitCmdInMemoryStage = true
         ),
         new StaticMemoryTranslatorPlugin(
           ioRange      = _(31 downto 28) === 0xF
@@ -145,7 +146,11 @@ class Briey(val config: BrieyConfig) extends Component{
     //Main components IO
     val jtag       = slave(Jtag())
     // Peripherals IO
-    val timerExternal = in Bool()
+    //Peripherals IO
+    val gpioA         = master(TriStateArray(32 bits))
+    val gpioB         = master(TriStateArray(32 bits))
+    val uart          = master(Uart())
+    val timerExternal = in(PinsecTimerCtrlExternal())
     val coreInterrupt = in Bool()
   }
 
@@ -197,7 +202,6 @@ class Briey(val config: BrieyConfig) extends Component{
     val apb3_config = Apb3Config(
       addressWidth = 32,
       dataWidth = 32
-      // selWidth = 1
     )
 
     val ram = AhbLite3OnChipRam(
@@ -205,20 +209,49 @@ class Briey(val config: BrieyConfig) extends Component{
       byteCount = onChipRamSize
     )
 
+    val apbBridge = new AhbLite3ToApb3Bridge(
+      ahbConfig = ahblite_config,
+      apbConfig = apb3_config
+    )
+
+    val gpioACtrl = Apb3Gpio(
+      gpioWidth = 32,
+      withReadSync = true
+    )
+    val gpioBCtrl = Apb3Gpio(
+      gpioWidth = 32,
+      withReadSync = true
+    )
+    val timerCtrl = PinsecTimerCtrl()
+
+
+    val uartCtrl = Apb3UartCtrl(uartCtrlConfig)
+    uartCtrl.io.apb.addAttribute(Verilator.public)
+
     val core = new Area{
       val config = VexRiscvConfig(
         plugins = cpuPlugins += new DebugPlugin(debugClockDomain)
       )
 
       val cpu = new VexRiscv(config)
-      var iBus : AhbLite3Master = null
-      var dBus : AhbLite3Master = null
+      var iBus : AhbLite3 = null
+      var dBus : AhbLite3 = null
       for(plugin <- config.plugins) plugin match{
-        case plugin: IBusSimplePlugin => iBus = plugin.iBus.toAhbLite3Master()
-        case plugin: DBusSimplePlugin => dBus = plugin.dBus.toAhbLite3Master(avoidWriteToReadHazard = true)
+        case plugin: IBusSimplePlugin => {
+          val iBustmp = new IBusSimpleBus(plugin)
+          iBustmp.cmd << plugin.iBus.cmd.halfPipe()
+          iBustmp.rsp <> plugin.iBus.rsp
+          iBus = iBustmp.toAhbLite3Master().toAhbLite3()
+        }
+        case plugin: DBusSimplePlugin => {
+          val dBustmp = new DBusSimpleBus
+          dBustmp.cmd << plugin.dBus.cmd.halfPipe()
+          dBustmp.rsp <> plugin.dBus.rsp
+          dBus = dBustmp.toAhbLite3Master(avoidWriteToReadHazard = true).toAhbLite3()
+        }
         case plugin : CsrPlugin        => {
           plugin.externalInterrupt := BufferCC(io.coreInterrupt)
-          plugin.timerInterrupt := BufferCC(io.timerExternal)
+          plugin.timerInterrupt := timerCtrl.io.interrupt
         }
         case plugin : DebugPlugin      => debugClockDomain{
           resetCtrl.axiReset setWhen(RegNext(plugin.io.resetOut))
@@ -230,15 +263,29 @@ class Briey(val config: BrieyConfig) extends Component{
 
     val crossbar = AhbLite3CrossbarFactory(ahblite_config)
     crossbar.addSlaves(
-      ram.io.ahb      -> (0x80000000L,   onChipRamSize)
+      ram.io.ahb       -> (0x80000000L,   onChipRamSize),
+      apbBridge.io.ahb -> (0xF0000000L,   1 MB)
     )
     crossbar.addConnections(
-      core.iBus.toAhbLite3() -> List(ram.io.ahb),
-      core.dBus.toAhbLite3() -> List(ram.io.ahb)
+      core.iBus -> List(ram.io.ahb),
+      core.dBus -> List(ram.io.ahb, apbBridge.io.ahb)
     )
     crossbar.build()
 
+   val apbDecoder = Apb3Decoder(
+      master = apbBridge.io.apb,
+      slaves = List(
+        gpioACtrl.io.apb -> (0x00000, 4 kB),
+        gpioBCtrl.io.apb -> (0x01000, 4 kB),
+        uartCtrl.io.apb  -> (0x10000, 4 kB),
+        timerCtrl.io.apb -> (0x20000, 4 kB)
+      )
+    )
   }
+  io.gpioA          <> axi.gpioACtrl.io.gpio
+  io.gpioB          <> axi.gpioBCtrl.io.gpio
+  io.timerExternal  <> axi.timerCtrl.io.external
+  io.uart           <> axi.uartCtrl.io.uart
 }
 
 //DE1-SoC
