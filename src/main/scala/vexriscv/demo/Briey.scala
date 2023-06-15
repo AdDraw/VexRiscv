@@ -52,17 +52,19 @@ object BrieyConfig{
       cpuPlugins = ArrayBuffer(
         new PcManagerSimplePlugin(0x80000000l, false),
         new IBusSimplePlugin(
-          resetVector = 0x80000000l,
-          cmdForkOnSecondStage = false,
+          resetVector = 0x00000000l,
+          cmdForkOnSecondStage = true,
           cmdForkPersistence = true,
           prediction = STATIC,
-          catchAccessFault = false,
-          compressedGen = false
+          catchAccessFault = true,
+          compressedGen = false,
+          bigEndian = false
         ),
         new DBusSimplePlugin(
-          catchAddressMisaligned = false,
-          catchAccessFault = false,
-          emitCmdInMemoryStage = true
+          catchAddressMisaligned = true,
+          catchAccessFault = true,
+          earlyInjection = false,
+          bigEndian = false
         ),
         new StaticMemoryTranslatorPlugin(
           ioRange      = _(31 downto 28) === 0xF
@@ -194,25 +196,6 @@ class Briey(val config: BrieyConfig) extends Component{
   )
 
   val axi = new ClockingArea(axiClockDomain) {
-    val ahblite_config = AhbLite3Config(
-      addressWidth = 32,
-      dataWidth = 32
-    )
-
-    val apb3_config = Apb3Config(
-      addressWidth = 32,
-      dataWidth = 32
-    )
-
-    val ram = AhbLite3OnChipRam(
-      AhbLite3Config = ahblite_config,
-      byteCount = onChipRamSize
-    )
-
-    val apbBridge = new AhbLite3ToApb3Bridge(
-      ahbConfig = ahblite_config,
-      apbConfig = apb3_config
-    )
 
     val gpioACtrl = Apb3Gpio(
       gpioWidth = 32,
@@ -237,18 +220,8 @@ class Briey(val config: BrieyConfig) extends Component{
       var iBus : AhbLite3 = null
       var dBus : AhbLite3 = null
       for(plugin <- config.plugins) plugin match{
-        case plugin: IBusSimplePlugin => {
-          val iBustmp = new IBusSimpleBus(plugin)
-          iBustmp.cmd << plugin.iBus.cmd.halfPipe()
-          iBustmp.rsp <> plugin.iBus.rsp
-          iBus = iBustmp.toAhbLite3Master().toAhbLite3()
-        }
-        case plugin: DBusSimplePlugin => {
-          val dBustmp = new DBusSimpleBus
-          dBustmp.cmd << plugin.dBus.cmd.halfPipe()
-          dBustmp.rsp <> plugin.dBus.rsp
-          dBus = dBustmp.toAhbLite3Master(avoidWriteToReadHazard = true).toAhbLite3()
-        }
+        case plugin: IBusSimplePlugin => iBus = plugin.iBus.toAhbLite3Master().toAhbLite3()
+        case plugin: DBusSimplePlugin => dBus = plugin.dBus.cmdHalfPipe().toAhbLite3Master(avoidWriteToReadHazard = true).toAhbLite3()
         case plugin : CsrPlugin        => {
           plugin.externalInterrupt := BufferCC(io.coreInterrupt)
           plugin.timerInterrupt := timerCtrl.io.interrupt
@@ -261,7 +234,23 @@ class Briey(val config: BrieyConfig) extends Component{
       }
     }
 
-    val crossbar = AhbLite3CrossbarFactory(ahblite_config)
+    val ahbl_config = core.iBus.config.copy()
+    val apb3_config = new Apb3Config(
+      addressWidth = 20,
+      dataWidth = ahbl_config.dataWidth
+    )
+
+    val ram = AhbLite3OnChipRam(
+      AhbLite3Config = ahbl_config,
+      byteCount = onChipRamSize
+    )
+
+    val apbBridge = AhbLite3ToApb3Bridge(
+      ahbConfig = ahbl_config,
+      apbConfig = apb3_config
+    )
+
+    val crossbar = AhbLite3CrossbarFactory(ahbl_config)
     crossbar.addSlaves(
       ram.io.ahb       -> (0x80000000L,   onChipRamSize),
       apbBridge.io.ahb -> (0xF0000000L,   1 MB)
